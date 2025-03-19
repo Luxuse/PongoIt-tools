@@ -12,7 +12,7 @@ creer_image() {
     echo "====================================="
     echo "      Création d'une image ISO       "
     echo "====================================="
-    
+
     echo "Disques disponibles :"
     lsblk -d -o NAME,SIZE,MODEL | grep -E '^sd|nvme'
 
@@ -25,7 +25,13 @@ creer_image() {
     fi
 
     read -p "Nom de l'image ISO (sans extension) : " ISO_NAME
-    ISO_PATH="${ISO_NAME}.iso"
+    read -p "Entrez le chemin où enregistrer l'image ISO (laissez vide pour le répertoire courant) : " ISO_PATH
+
+    if [ -z "$ISO_PATH" ]; then
+        ISO_PATH="./${ISO_NAME}.iso"
+    else
+        ISO_PATH="${ISO_PATH}/${ISO_NAME}.iso"
+    fi
 
     echo "Création de l'image ISO..."
     if command -v pv &>/dev/null; then
